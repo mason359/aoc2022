@@ -5,7 +5,14 @@ use reqwest::blocking::Client;
 use crate::Day;
 use crate::day1;
 
-pub fn parse_args(mut args: env::Args) -> (u32, u32, bool) {
+pub struct Config {
+    pub day: u32,
+    pub part: u32,
+    pub use_test_input: bool,
+    pub do_submit: bool,
+}
+
+pub fn parse_args(mut args: env::Args) -> Config {
     args.next();
     let day = match args.next() {
         Some(day) => match day.parse::<u32>().unwrap() {
@@ -13,16 +20,18 @@ pub fn parse_args(mut args: env::Args) -> (u32, u32, bool) {
             _ => Err("Invalid day"),
         },
         None => Err("No day number provided"),
-    };
+    }.unwrap();
     let part = match args.next() {
         Some(part) => match part.parse::<u32>().unwrap() {
             part_num if (1..=2).contains(&part_num) => Ok(part_num),
             _ => Err("Invalid part"),
         }
         None => Err("No part number provided"),
-    };
-    let use_test_input = Some("-t".to_string()) == args.next();
-    (day.unwrap(), part.unwrap(), use_test_input)
+    }.unwrap();
+    let flag = args.next();
+    let use_test_input = Some("-t".to_string()) == flag;
+    let do_submit = Some("-s".to_string()) == flag;
+    Config { day, part, use_test_input, do_submit }
 }
 
 pub fn get_day(day: u32) -> Box<dyn Day> {
@@ -52,7 +61,41 @@ pub fn download_input(day: u32) -> String {
     let uri = format!("https://adventofcode.com/2022/day/{}/input", day);
     let session = fs::read_to_string("./session").unwrap();
     let client = Client::new();
-    let input = client.get(uri).header("Cookie", format!("session={}", session)).send().unwrap().text().unwrap();
+    let input = client
+        .get(uri)
+        .header("Cookie", format!("session={}", session))
+        .send()
+        .unwrap()
+        .text()
+        .unwrap();
     fs::write(format!("./input/input{}.txt", day), input.as_str()).unwrap();
     input
+}
+
+pub fn submit_answer(day: u32, part: u32, answer: i64) {
+    println!("Submitting answer...");
+    
+    let uri = format!("https://adventofcode.com/2022/day/{}/answer", day);
+    let session = fs::read_to_string("./session").unwrap();
+    let client = Client::new();
+    let response = client
+        .post(uri)
+        .header("Cookie", format!("session={}", session))
+        .body(format!("level={}&answer={}", part, answer))
+        .send()
+        .unwrap()
+        .text()
+        .unwrap();
+
+    let result;
+    if response.contains("too high") {
+        result = "Too high";
+    } else if response.contains("too low") {
+        result = "Too low";
+    } else if response.contains("right answer") {
+        result = "Correct!";
+    } else {
+        result = response.as_str();
+    }
+    println!("Submitted: {}", result);
 }

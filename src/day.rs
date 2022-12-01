@@ -5,7 +5,7 @@ pub trait Day {
 
     fn part2(&self, input: String) -> i64;
 
-    fn run_solution(&self, day_num: u32, part_num: u32, input: String) {
+    fn run_solution(&self, day_num: u32, part_num: u32, input: String) -> i64 {
         let runner = match part_num {
             1 => Box::new(|input: String| -> i64 { self.part1(input) }) as Box<dyn Fn(_) -> i64>,
             2 => Box::new(|input: String| -> i64 { self.part2(input) }) as Box<dyn Fn(_) -> i64>,
@@ -30,5 +30,7 @@ pub trait Day {
 
         println!("Result: {}", result);
         println!("Finished in {}{}", time, unit);
+
+        result
     }
 }

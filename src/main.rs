@@ -6,10 +6,13 @@ pub mod utils;
 use std::env;
 
 fn main() {
-    let (day, part, use_test_input) = utils::parse_args(env::args());
-    let day_box = utils::get_day(day);
-    let input = utils::get_input(day, use_test_input);
-    day_box.run_solution(day, part, input);
+    let config = utils::parse_args(env::args());
+    let day_box = utils::get_day(config.day);
+    let input = utils::get_input(config.day, config.use_test_input);
+    let result = day_box.run_solution(config.day, config.part, input);
+    if config.do_submit {
+        utils::submit_answer(config.day, config.part, result);
+    }
 }
 
 pub use day::Day;

@@ -3,7 +3,7 @@ use std::fs;
 use reqwest::blocking::Client;
 
 use crate::Day;
-use crate::day1;
+use crate::{day1, day2};
 
 pub struct Config {
     pub day: u32,
@@ -37,6 +37,7 @@ pub fn parse_args(mut args: env::Args) -> Config {
 pub fn get_day(day: u32) -> Box<dyn Day> {
     match day {
         1 => Box::new(day1::Day1),
+        2 => Box::new(day2::Day2),
         1..=25 => unimplemented!(),
         _ => panic!("Invalid day"),
     }

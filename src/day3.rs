@@ -8,23 +8,8 @@ impl Day for Day3 {
     fn part1(&self, input: String) -> i64 {
         input
             .lines()
-            .map(|sack| [&sack[..(sack.len() / 2)], &sack[(sack.len() / 2)..]]
-                .iter()
-                .map(|compartment| compartment
-                    .bytes()
-                    .collect::<HashSet<_>>()
-                )
-                .reduce(|items1, items2| items1
-                    .intersection(&items2)
-                    .copied()
-                    .collect()
-                )
-                .unwrap()
-                .iter()
-                .next()
-                .unwrap()
-                .clone()
-            )
+            .map(|sack| sack.split_at(sack.len() / 2))
+            .map(|(sack1, sack2)| get_common(&[sack1, sack2]))
             .map(get_priority)
             .sum::<i64>()
     }
@@ -33,26 +18,24 @@ impl Day for Day3 {
         input
             .lines()
             .array_chunks()
-            .map(|group: [&str; 3]| group
-                .iter()
-                .map(|elf| elf
-                    .bytes()
-                    .collect::<HashSet<_>>()
-                )
-                .reduce(|elf1, elf2| elf1
-                    .intersection(&elf2)
-                    .copied()
-                    .collect()
-                )
-                .unwrap()
-                .iter()
-                .next()
-                .unwrap()
-                .clone()
-            )
+            .map(|group: [&str; 3]| get_common(&group))
             .map(get_priority)
             .sum::<i64>()
     }
+}
+
+fn get_common(sacks: &[&str]) -> u8 {
+    sacks
+        .iter()
+        .map(|sack| sack
+            .bytes()
+            .collect::<HashSet<_>>()
+        )
+        .reduce(|items1, items2| &items1 & &items2)
+        .unwrap()
+        .into_iter()
+        .next()
+        .unwrap()
 }
 
 fn get_priority(item: u8) -> i64 {

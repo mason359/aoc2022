@@ -9,7 +9,6 @@ pub struct Config {
     pub day: u32,
     pub part: u32,
     pub use_test_input: bool,
-    pub do_submit: bool,
 }
 
 pub fn parse_args(mut args: env::Args) -> Config {
@@ -30,8 +29,7 @@ pub fn parse_args(mut args: env::Args) -> Config {
     }.unwrap();
     let flag = args.next();
     let use_test_input = Some("-t".to_string()) == flag;
-    let do_submit = Some("-s".to_string()) == flag;
-    Config { day, part, use_test_input, do_submit }
+    Config { day, part, use_test_input }
 }
 
 pub fn get_day(day: u32) -> Box<dyn Day> {

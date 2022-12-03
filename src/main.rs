@@ -13,10 +13,7 @@ fn main() {
     let config = utils::parse_args(env::args());
     let day_box = utils::get_day(config.day);
     let input = utils::get_input(config.day, config.use_test_input);
-    let result = day_box.run_solution(config.day, config.part, input);
-    if config.do_submit {
-        utils::submit_answer(config.day, config.part, result);
-    }
+    day_box.run_solution(config.day, config.part, input);
 }
 
 pub use day::Day;

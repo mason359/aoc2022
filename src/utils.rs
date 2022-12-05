@@ -3,7 +3,7 @@ use std::fs;
 use reqwest::blocking::Client;
 
 use crate::Day;
-use crate::{day1, day2, day3, day4};
+use crate::{day1, day2, day3, day4, day5};
 
 pub struct Config {
     pub day: u32,
@@ -38,6 +38,7 @@ pub fn get_day(day: u32) -> Box<dyn Day> {
         2 => Box::new(day2::Day2),
         3 => Box::new(day3::Day3),
         4 => Box::new(day4::Day4),
+        5 => Box::new(day5::Day5),
         1..=25 => unimplemented!(),
         _ => panic!("Invalid day"),
     }

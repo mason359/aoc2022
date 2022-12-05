@@ -66,7 +66,7 @@ fn parse_steps(input: &str) -> Vec<Vec<usize>> {
             .skip(1)
             .step_by(2)
             .map(|num| num.parse::<usize>().unwrap())
-            .collect::<Vec<_>>()
+            .collect()
         )
-        .collect::<Vec<_>>()
+        .collect()
 }

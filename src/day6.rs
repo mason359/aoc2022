@@ -18,7 +18,7 @@ fn find_marker(input: String, size: usize) -> i64 {
     (size..input.len())
         .skip_while(|i| input[*i - size..*i]
             .chars()
-            .collect::<HashSet<char>>()
+            .collect::<HashSet<_>>()
             .len() < size
         )
         .next()

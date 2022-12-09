@@ -7,9 +7,11 @@ pub mod day4;
 pub mod day5;
 pub mod day6;
 pub mod day7;
+pub mod day9;
 
 pub mod day;
 pub mod utils;
+pub mod aoc_utils;
 
 use std::env;
 
@@ -21,3 +23,4 @@ fn main() {
 }
 
 pub use day::Day;
+pub use aoc_utils::Coord;

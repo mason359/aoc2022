@@ -7,10 +7,12 @@ pub mod day4;
 pub mod day5;
 pub mod day6;
 pub mod day7;
+pub mod day8;
 pub mod day9;
 pub mod day10;
 
 pub mod day;
+pub mod grid;
 pub mod utils;
 pub mod aoc_utils;
 
@@ -24,4 +26,5 @@ fn main() {
 }
 
 pub use day::Day;
+pub use grid::Grid;
 pub use aoc_utils::Coord;
